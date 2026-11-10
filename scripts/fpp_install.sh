@@ -22,3 +22,6 @@ chmod +x "${MEDIADIR}/plugins/fpp-time-temp/bin/tt_daemon.php" "${MEDIADIR}/plug
 # fppd reads commands/descriptions.json only at startup, and the daemon is
 # launched from postStart.sh, so ask FPP to show its "Restart Required" banner.
 setSetting restartFlag 1
+
+# Start the display service now so it works before the first full FPPD start.
+"${MEDIADIR}/plugins/fpp-time-temp/bin/daemon_ctl.sh" ensure || true

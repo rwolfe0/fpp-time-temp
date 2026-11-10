@@ -97,7 +97,7 @@
   }
   function showStatus(d) {
     var box = el('ttStatus'), s = d.status || {}, text, cls;
-    if (!d.daemonRunning) { text = 'The display service is not running. Restart FPPD to start it.'; cls = 'alert-warning'; }
+    if (!d.daemonRunning) { text = 'The display service is not running. Press Turn display on to start it.'; cls = 'alert-warning'; }
     else if (!d.enabled) { text = 'Display is off.'; cls = 'alert-secondary'; }
     else if (s.yielding) { text = 'Display is on, stepping aside while a playlist plays.'; cls = 'alert-info'; }
     else if (s.displaying) {

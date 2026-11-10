@@ -31,6 +31,13 @@ function getEndpointsfpptimetemp() {
     );
 }
 
+// The display service normally starts with FPPD; this starts it if it is not running
+// (first use after install, or after a soft restart that skips the start hooks).
+function fpptimetempEnsureDaemon() {
+    @exec('/bin/sh ' . escapeshellarg(__DIR__ . '/bin/daemon_ctl.sh') . ' ensure > /dev/null 2>&1');
+    usleep(400000);
+}
+
 function fpptimetempState() {
     $dir = fpptimetempDataDir();
     $cfg = fpptimetempDefaults();
@@ -70,6 +77,7 @@ function fpptimetempSaveSettings() {
     if (isset($in['TopMargin']))        $clean['TopMargin'] = (string)max(0, min(60, (int)$in['TopMargin']));
 
     foreach ($clean as $k => $v) WriteSettingToFile($k, $v, 'fpp-time-temp');
+    fpptimetempEnsureDaemon();
 
     // The token is a credential: it lives in plugindata/ (mode 0600), never in config/ and never in the log.
     $dir = fpptimetempDataDir();
@@ -87,6 +95,7 @@ function fpptimetempSaveSettings() {
 function fpptimetempSetEnabled($on) {
     $dir = fpptimetempDataDir();
     file_put_contents("$dir/enabled", $on ? "1\n" : "0\n");
+    if ($on) fpptimetempEnsureDaemon();
     return json(fpptimetempState());
 }
 

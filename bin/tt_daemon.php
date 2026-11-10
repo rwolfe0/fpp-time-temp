@@ -259,6 +259,12 @@ if (($argv[1] ?? '') === 'render') {           // offline test: tt_daemon.php re
 }
 
 @mkdir($dataDir, 0755, true);
+// Single-instance lock, then our own pid file (written by rename so either root or fpp can replace it).
+$lockFh = @fopen("$dataDir/daemon.lock", 'c');
+if ($lockFh) { @chmod("$dataDir/daemon.lock", 0666); if (!flock($lockFh, LOCK_EX | LOCK_NB)) exit(0); }
+@file_put_contents("$dataDir/daemon.pid.tmp", getmypid() . "\n");
+@chmod("$dataDir/daemon.pid.tmp", 0644);
+@rename("$dataDir/daemon.pid.tmp", "$dataDir/daemon.pid");
 setTimezone();
 logMsg('daemon started');
 
@@ -304,4 +310,5 @@ while ($running) {
 
 if ($showing) clearModel($shownCfg ?: loadCfg());
 writeStatus(['enabled' => isEnabled(), 'displaying' => false, 'yielding' => false, 'temp' => null, 'source' => '', 'message' => 'daemon stopped']);
+@unlink("$dataDir/daemon.pid");
 logMsg('daemon stopped');
