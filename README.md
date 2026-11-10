@@ -39,4 +39,4 @@ longitude saved in FPP) to read the temperature. The Tempest token is stored on 
 | `plugindata/fpp-time-temp/` | On/off state, status, Tempest token |
 | `logs/plugin-fpp-time-temp.log` | Log |
 
-Uninstalling removes the first two. Packages installed as dependencies: `php-gd`, `fonts-dejavu-core`.
+Uninstalling removes the first two. Package installed as a dependency: `php-gd`. The DejaVu Sans Bold font is bundled in `fonts/` under its own license (`fonts/DejaVu-LICENSE.txt`).

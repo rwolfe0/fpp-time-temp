@@ -16,7 +16,9 @@ $cfgFile   = "$mediaDir/config/plugin." . PLUGIN;
 $dataDir   = "$mediaDir/plugindata/" . PLUGIN;
 $logFile   = (getenv('LOGDIR') ?: "$mediaDir/logs") . '/plugin-' . PLUGIN . '.log';
 $FPP       = getenv('TT_FPP_HOST') ?: 'http://127.0.0.1';
-$FONT      = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf';
+// The font ships with the plugin so the display never depends on a system package.
+$FONT      = "$pluginDir/fonts/DejaVuSans-Bold.ttf";
+if (!is_readable($FONT)) $FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf';
 
 $DEFAULTS = [
     'Model'            => 'LED Panels',
@@ -241,8 +243,9 @@ function clearModel($cfg) {
 
 /* ---------- main ---------- */
 
+setTimezone();
 if (!function_exists('imagettftext')) { logMsg('PHP GD with FreeType is missing (package php-gd); cannot draw. Exiting.'); exit(1); }
-if (!is_readable($FONT)) { logMsg("Font not found: $FONT (package fonts-dejavu-core). Exiting."); exit(1); }
+if (!is_readable($FONT)) { logMsg("Font not found: $FONT. Reinstall the plugin. Exiting."); exit(1); }
 if (!function_exists('curl_init')) { logMsg('PHP curl extension is missing (package php-curl). Exiting.'); exit(1); }
 
 $running = true;
@@ -253,7 +256,6 @@ if (function_exists('pcntl_async_signals')) {
 }
 
 if (($argv[1] ?? '') === 'render') {           // offline test: tt_daemon.php render out.png [W H] [temp]
-    setTimezone();
     file_put_contents($argv[2] ?? 'preview.png', renderPng((int)($argv[3] ?? 128), (int)($argv[4] ?? 96), loadCfg(), $argv[5] ?? '59°F'));
     exit(0);
 }
@@ -265,7 +267,6 @@ if ($lockFh) { @chmod("$dataDir/daemon.lock", 0666); if (!flock($lockFh, LOCK_EX
 @file_put_contents("$dataDir/daemon.pid.tmp", getmypid() . "\n");
 @chmod("$dataDir/daemon.pid.tmp", 0644);
 @rename("$dataDir/daemon.pid.tmp", "$dataDir/daemon.pid");
-setTimezone();
 logMsg('daemon started');
 
 $showing = false; $shownCfg = null; $lastKey = ''; $lastPush = 0; $playing = false; $lastPlayCheck = 0;

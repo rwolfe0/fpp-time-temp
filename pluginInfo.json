@@ -49,8 +49,7 @@
 	],
 	"dependencies": {
 		"packages": [
-			"php-gd",
-			"fonts-dejavu-core"
+			"php-gd"
 		]
 	}
 }

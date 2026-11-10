@@ -9,7 +9,6 @@ set -e
 # This guarded fallback only does something if they are still missing.
 NEED=""
 php -r 'exit(function_exists("imagettftext") ? 0 : 1);' 2>/dev/null || NEED="$NEED php-gd"
-[ -f /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf ] || NEED="$NEED fonts-dejavu-core"
 if [ -n "$NEED" ]; then
     apt-get update
     apt-get install -y $NEED
