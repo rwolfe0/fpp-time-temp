@@ -128,9 +128,9 @@
     el('ttClearToken').style.display = d.tokenSet ? '' : 'none';
     showStatus(d);
   }
-  function refresh() { call('GET', 'settings').then(showStatus).catch(function () {}); }
+  function refresh() { call('GET', 'tt-config').then(showStatus).catch(function () {}); }
 
-  Promise.all([call('GET', 'settings'), fetch('api/overlays/models').then(function (r) { return r.json(); }).catch(function () { return []; })])
+  Promise.all([call('GET', 'tt-config'), fetch('api/overlays/models').then(function (r) { return r.json(); }).catch(function () { return []; })])
     .then(function (res) { fill(res[0], Array.isArray(res[1]) ? res[1] : []); })
     .catch(function (e) { el('ttStatus').className = 'alert alert-danger mb-2'; el('ttStatus').textContent = 'Could not load settings (' + e.message + ').'; });
 
@@ -141,16 +141,16 @@
       Source: el('ttSource').value, Units: el('ttUnits').value, StationId: el('ttStation').value
     };
     if (el('ttToken').value.trim() !== '') body.Token = el('ttToken').value.trim();
-    call('POST', 'settings', body).then(function (d) {
+    call('POST', 'tt-config', body).then(function (d) {
       fill(d, null); el('ttSaved').textContent = 'Saved. The sign updates within a few seconds.';
       setTimeout(function () { el('ttSaved').textContent = ''; }, 5000); setTimeout(refresh, 3000);
     }).catch(function (e) { el('ttSaved').textContent = 'Save failed (' + e.message + ').'; });
   });
   el('ttClearToken').addEventListener('click', function () {
-    call('POST', 'settings', { ClearToken: true }).then(function (d) { fill(d, null); });
+    call('POST', 'tt-config', { ClearToken: true }).then(function (d) { fill(d, null); });
   });
-  el('ttOn').addEventListener('click', function () { call('POST', 'enable').then(function (d) { showStatus(d); setTimeout(refresh, 2500); }); });
-  el('ttOff').addEventListener('click', function () { call('POST', 'disable').then(function (d) { showStatus(d); setTimeout(refresh, 2500); }); });
+  el('ttOn').addEventListener('click', function () { call('POST', 'tt-enable').then(function (d) { showStatus(d); setTimeout(refresh, 2500); }); });
+  el('ttOff').addEventListener('click', function () { call('POST', 'tt-disable').then(function (d) { showStatus(d); setTimeout(refresh, 2500); }); });
   setInterval(refresh, 10000);
 })();
 </script>

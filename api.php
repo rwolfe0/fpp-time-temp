@@ -2,10 +2,10 @@
 /*
  * fpp-time-temp API, served under /api/plugin/fpp-time-temp/
  *
- *   GET  settings   current settings, on/off state and daemon status (never returns the token)
- *   POST settings   save settings (JSON body)
- *   POST enable     turn the display on
- *   POST disable    turn the display off
+ *   GET  tt-config   current settings, on/off state and daemon status (never returns the token)
+ *   POST tt-config   save settings (JSON body)
+ *   POST tt-enable   turn the display on
+ *   POST tt-disable   turn the display off
  */
 
 function fpptimetempDefaults() {
@@ -24,10 +24,10 @@ function fpptimetempDataDir() {
 
 function getEndpointsfpptimetemp() {
     return array(
-        array('method' => 'GET',  'endpoint' => 'settings', 'callback' => 'fpptimetempGetSettings'),
-        array('method' => 'POST', 'endpoint' => 'settings', 'callback' => 'fpptimetempSaveSettings'),
-        array('method' => 'POST', 'endpoint' => 'enable',   'callback' => 'fpptimetempEnable'),
-        array('method' => 'POST', 'endpoint' => 'disable',  'callback' => 'fpptimetempDisable'),
+        array('method' => 'GET',  'endpoint' => 'tt-config', 'callback' => 'fpptimetempGetSettings'),
+        array('method' => 'POST', 'endpoint' => 'tt-config', 'callback' => 'fpptimetempSaveSettings'),
+        array('method' => 'POST', 'endpoint' => 'tt-enable',   'callback' => 'fpptimetempEnable'),
+        array('method' => 'POST', 'endpoint' => 'tt-disable',  'callback' => 'fpptimetempDisable'),
     );
 }
 
