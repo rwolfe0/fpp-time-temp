@@ -1,0 +1,12 @@
+[
+{ "name": "Time & Temp Start",
+  "script": "start.sh",
+  "args": [
+  ]
+},
+{ "name": "Time & Temp Stop",
+  "script": "stop.sh",
+  "args": [
+  ]
+}
+]

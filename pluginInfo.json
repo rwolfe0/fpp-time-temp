@@ -1,0 +1,56 @@
+{
+	"repoName": "fpp-time-temp",
+	"name": "Time & Temperature Display",
+	"author": "rwolfe0",
+	"description": "Shows a large clock over a smaller outdoor temperature on an LED panel matrix (or any Pixel Overlay Model). Temperature comes from a WeatherFlow Tempest station or from Open-Meteo. Start and stop it from the FPP scheduler with the included commands; it steps aside automatically while a playlist is playing.",
+	"homeURL": "https://github.com/rwolfe0/fpp-time-temp",
+	"srcURL": "https://github.com/rwolfe0/fpp-time-temp.git",
+	"bugURL": "https://github.com/rwolfe0/fpp-time-temp/issues",
+	"allowUpdates": 1,
+	"releaseNotesStyle": "gitHistory",
+	"privacy": {
+		"summary": "Fetches the current temperature about once a minute while the display is on. With a Tempest station it sends your station ID and access token to WeatherFlow; otherwise it sends the latitude/longitude saved in FPP to Open-Meteo. Nothing else leaves the device.",
+		"sends": [
+			{
+				"to": "swd.weatherflow.com",
+				"what": "your Tempest station ID and personal access token",
+				"why": "to read the current temperature from your own weather station",
+				"alwaysOn": false
+			},
+			{
+				"to": "api.open-meteo.com",
+				"what": "the latitude and longitude saved in FPP settings",
+				"why": "to read the current temperature when no Tempest station is configured",
+				"alwaysOn": false
+			}
+		],
+		"collects": [
+			{
+				"what": "your Tempest personal access token",
+				"about": "the operator",
+				"keptDays": 0,
+				"canDelete": true,
+				"where": "plugindata/fpp-time-temp/"
+			}
+		],
+		"sensors": [],
+		"remoteAccess": "none",
+		"systemChanges": [],
+		"closedCode": false,
+		"other": "none"
+	},
+	"versions": [
+		{
+			"minFPPVersion": "10.0",
+			"maxFPPVersion": "0",
+			"branch": "main",
+			"sha": ""
+		}
+	],
+	"dependencies": {
+		"packages": [
+			"php-gd",
+			"fonts-dejavu-core"
+		]
+	}
+}
